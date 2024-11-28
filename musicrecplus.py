@@ -33,9 +33,9 @@ def startUpMenu():
     database = loadIn()
     userInput = input("Enter your name ( put a $ symbol after your name if you wish your preferences to remain private):")
 
-    if database[userInput] != True:
+    if userInput not in database:
         prefs = input("Looks like you are a new user! Please enter your favorite artists:")
-        database["userInput"] = "prefs"
+        database["userInput"] = prefs.split(",")
         save(database)
 
     while True:
@@ -45,14 +45,15 @@ def startUpMenu():
         print("p - Show most popular artists")
         print("h - How popular is the most popular")
         print("m - Which user has the most likes")
-        userDecision = input("q - Save and quit")
+        print("q - Save and quit")
+        userDecision = input("Choose an option: ").strip().lower()
 
         if userDecision == "e":
             while True:
                 favArtist = input("Enter an artist that you like ( Enter to finish ):")
                 if favArtist == "":
                     break
-                database["userInput"] = "prefs"
+                database["userInput"] = prefs.split(",")
                 save(database)
         elif userDecision == "r":
             pass
@@ -70,9 +71,9 @@ def startUpMenu():
             pass
         
         else:
-            break
+            print("Invalid option. Please try again")
 
-
+startUpMenu()
 
 
 
