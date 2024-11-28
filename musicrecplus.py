@@ -42,7 +42,7 @@ def startUpMenu():
         print("Enter a letter to choose an option:")
         print("e - Enter preferences")
         print("r - Get recommendations")
-        print("p - Show most popular artists")
+        print("p - Show most popular artists")
         print("h - How popular is the most popular")
         print("m - Which user has the most likes")
         userDecision = input("q - Save and quit")
