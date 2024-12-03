@@ -1,4 +1,4 @@
-def loadIn(filename="musicrecplus.txt"):
+def loadIn(filename="musicrecplus_ex1.txt"):
     "Loads the music database from file named musicreccplus.txt"
     try:
         with open(filename, "r") as file:
@@ -11,7 +11,7 @@ def loadIn(filename="musicrecplus.txt"):
     except FileNotFoundError:
         return {}
 
-def save(database, filename="musicrecplus.txt"):
+def save(database, filename="musicrecplus_ex1.txt"):
     "Saves database to a file"
     with open(filename, "w") as file:
         for (user, artists) in sorted(database.items()):
@@ -85,8 +85,55 @@ def numMatches(list1, list2):
             i += 1
         else:
             j += 1
-    return matches   
+    return matches
 
+def isPrivate(user):
+    if user[len(user)-1:] == "$":
+        return True
+
+def mostPopularArtists(database):
+    likes = {}
+    for user, artists in database.items():
+        if isPrivate(user) != True:
+            for user in artists:
+                likes[user] = len(artists)
+    if not likes == True:
+        print("Sorry, no users found.")
+        return []
+    sortedVal = sorted(likes.keys(), reverse=True)
+        
+    return sortedVal
+    
+def howPopular(database):
+    count = {}
+    for user, artists in database.items():
+        if isPrivate(user) != True:
+            for artist in artists:
+                count[artist] = count.get(artist, 0) + 1
+
+    if not count:
+        print("Sorry, no artists found.")
+        return 0
+
+    return max(count.values())
+
+def userLikesMostArtists(database):
+    likes = {}
+    for user, artists in database.items():
+        if isPrivate(user) != True:
+            for user in artists:
+                likes[user] = len(artists)
+    if not likes:
+        print("Sorry, no users found.")
+        return 0
+
+    likeVal = max(likes.values())
+    mostLikedUsers = [user for user, count in likes.items() if count == likeVal]
+    return sorted(mostLikedUsers)
+
+    
+
+    
  
 def startUpMenu():
     database = loadIn()
@@ -112,15 +159,33 @@ def startUpMenu():
                     break
                 database[userInput] = preferences.split(",")   
                 save(database)
+                
         elif userDecision == "r":
             pass
+        
         elif userDecision == "p":
-            artists.sort()
-            return artists
+            sortedVal = mostPopularArtists(database)
+            if len(sortedVal) < 3:
+                for i in range(len(sortedVal)):
+                    print(sortedVal[i])
+                else:
+                    for i in range(3):
+                        print(sortedVal[i])
+        
         elif userDecision == "h":
-            pass
+            "gives the number of likes the most popular artist received"
+            popularity = howPopular(database)
+            if popularity != 0:
+                print(popularity)
+            
         elif userDecision == "m":
-            pass
+            "prints full name of user who likes the most artists"
+            print("User(s) with the Most Likes:")
+            mostLikedUsers = userLikesMostArtists(database)
+            for user in mostLikedUsers:
+                print(user)
+            
+                
         elif userDecision == "q":
             break
         else:
